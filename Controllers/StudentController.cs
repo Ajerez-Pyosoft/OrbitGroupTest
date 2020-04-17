@@ -4,47 +4,124 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using api.Results;
 using WebApiCore.Models;
 
 namespace WebApiCore.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class StudentController : ControllerBase
     {
+        private readonly sampleContext dbContext;
+
+        public StudentController(sampleContext dbContext) {
+            this.dbContext = dbContext;
+        }
 
         [HttpGet]
-        public IEnumerable<Student> Get()
+        public ActionResult<IEnumerable<Student>> Get() {
+            return Ok(new ApiResult {
+                Data = dbContext.Student.ToList(),
+                Message = "Student information"
+                }
+            );
+        }
+
+        // GET: api/Student/5
+        [HttpGet]      
+        [Route("{id}")]      
+        public ActionResult<IEnumerable<Student>> GetStudent(int id)
         {
-          using(var context = new sampleContext()) {
-              //bring everyone
-            //   return context.Student.ToList();
-            // //save one
-            // Student student = new Student();
-            // student.Username = "martin.perez";
-            // student.FirstName = "martin";
-            // student.LastName = "perez";
-            // student.Age = 27;
-            // student.Career = "Industrial Engineer";
 
-            // context.Student.Add(student);
+                var data = dbContext.Student
+                            .Where(student => student.Id == id)
+                            .FirstOrDefault();
 
-            // context.SaveChanges();
+                if (data == null) {
+                    return NotFound();
+                }
 
-            // //modify one
+                return Ok(data);
+        }
 
-            // Student ModifiedStudent = context.Student.Where(student => student.FirstName == "pedro").FirstOrDefault();
-            // ModifiedStudent.Age = 28;
+        [HttpPost]
+        public ActionResult Post([FromBody] Student student)
+        {
+            var result = new ApiResult();
+            if (!ModelState.IsValid) {
+                result.Message = "Invalid Student Information";
+                result.IsError = true;
+                return BadRequest(result);
+            }
+                
 
-            // context.SaveChanges();
+            dbContext.Student.Add(student);
+            dbContext.SaveChanges();
+            result.Message = "Student registered successfully";
+            return Ok(result);
+        }
 
-            // //delete one
-            // Student DeletedStudent = context.Student.Where(student => student.FirstName == "pedro").FirstOrDefault();
-            // context.Student.Remove(DeletedStudent);
+        [HttpPut]
+        public ActionResult Put([FromBody] Student student)
+        {
+            var result = new ApiResult();
+            if (!ModelState.IsValid) {
+                result.Message = "Invalid Student Information";
+                result.IsError = true;
+                return BadRequest(result);
+            }
 
-              //bring just one
-              return context.Student.Where(student => student.FirstName == "pedro").ToList();
-          }   
+            var dbStudent = dbContext.Student
+                .Where(S => S.Id == student.Id)
+                .FirstOrDefault();
+
+            if (dbStudent == null) {
+                result.Message = $"Student with id {student.Id} not found";
+                result.IsError = true;
+                return BadRequest(result);
+            }
+                
+            dbStudent.Username = student.Username; 
+            dbStudent.FirstName = student.FirstName; 
+            dbStudent.LastName = student.LastName; 
+            dbStudent.Age = student.Age; 
+            dbStudent.Career = student.Career; 
+
+            dbContext.Update(dbStudent);
+            dbContext.SaveChanges();
+
+            result.Message = "Student modified successfully";
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public ActionResult Delete(int id)
+        {
+            var result = new ApiResult();
+            if (!ModelState.IsValid) {
+                result.Message = "Invalid Student Information";
+                result.IsError = true;
+                return BadRequest(result);
+            }
+
+            var dbStudent = dbContext.Student
+                .Where(s => s.Id == id)
+                .FirstOrDefault();
+
+            if (dbStudent == null) {
+                result.Message = $"Student with id {id} not found";
+                result.IsError = true;
+                return BadRequest(result);
+            }
+
+            dbContext.Remove(dbStudent);
+            dbContext.SaveChanges();
+
+            result.Message = "Student deleted successfully";
+            return Ok(result);
+        
         }
     }
 }

@@ -1,29 +1,29 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\andre\\projects\\WebApiCore\\WebApiCore\\WebApiCore.csproj": {}
+    "C:\\Users\\andre\\projects\\WebApiCore\\WebApiCore.csproj": {}
   },
   "projects": {
-    "C:\\Users\\andre\\projects\\WebApiCore\\WebApiCore\\WebApiCore.csproj": {
+    "C:\\Users\\andre\\projects\\WebApiCore\\WebApiCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\andre\\projects\\WebApiCore\\WebApiCore\\WebApiCore.csproj",
+        "projectUniqueName": "C:\\Users\\andre\\projects\\WebApiCore\\WebApiCore.csproj",
         "projectName": "WebApiCore",
-        "projectPath": "C:\\Users\\andre\\projects\\WebApiCore\\WebApiCore\\WebApiCore.csproj",
+        "projectPath": "C:\\Users\\andre\\projects\\WebApiCore\\WebApiCore.csproj",
         "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\andre\\projects\\WebApiCore\\WebApiCore\\obj\\",
+        "outputPath": "C:\\Users\\andre\\projects\\WebApiCore\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\andre\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "netcoreapp3.0"
+          "netcoreapp3.1"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netcoreapp3.0": {
+          "netcoreapp3.1": {
             "projectReferences": {}
           }
         },
@@ -34,8 +34,12 @@
         }
       },
       "frameworks": {
-        "netcoreapp3.0": {
+        "netcoreapp3.1": {
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[3.1.3, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -46,9 +50,9 @@
               "target": "Package",
               "version": "[3.1.3, )"
             },
-            "System.Configuration.ConfigurationManager": {
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
-              "version": "[4.7.0, )"
+              "version": "[3.1.2, )"
             }
           },
           "imports": [
@@ -69,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.103\\RuntimeIdentifierGraph.json"
         }
       }
     }
